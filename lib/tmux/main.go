@@ -37,16 +37,7 @@ func (t *Tmux) getCommand() []string {
 	return append([]string{"tmux"}, t.commands...)
 }
 
-// public
-
-func (t *Tmux) AttachIfSessionExists() {
-	if t.HasSession() {
-		t.AttachSession()
-		t.ExecCommand()
-	}
-}
-
-func (t *Tmux) HasSession() bool {
+func (t *Tmux) hasSession() bool {
 	cmd := exec.Command("tmux", "has-session", "-t", t.SessionName)
 	err := cmd.Run()
 
@@ -54,6 +45,15 @@ func (t *Tmux) HasSession() bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+// public
+
+func (t *Tmux) AttachSessionIfExists() {
+	if t.hasSession() {
+		t.AttachSession()
+		t.ExecCommand()
 	}
 }
 

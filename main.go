@@ -12,7 +12,7 @@ import (
 
 func main() {
 	tmux := tmux.Initialize("bob")
-	tmux.AttachIfSessionExists()
+	tmux.AttachSessionIfExists()
 
 	tmux.NewSession()
 	tmux.NewWindow("bob2")
