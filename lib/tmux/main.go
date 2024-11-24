@@ -40,12 +40,20 @@ func (t *Tmux) getCommand() []string {
 // public
 
 func (t *Tmux) AttachIfSessionExists() {
+	if t.HasSession() {
+		t.AttachSession()
+		t.ExecCommand()
+	}
+}
+
+func (t *Tmux) HasSession() bool {
 	cmd := exec.Command("tmux", "has-session", "-t", t.SessionName)
 	err := cmd.Run()
 
 	if err == nil {
-		t.AttachSession()
-		t.ExecCommand()
+		return true
+	} else {
+		return false
 	}
 }
 
