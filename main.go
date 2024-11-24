@@ -21,7 +21,7 @@ func main() {
 
 	tmux := &tmux.Tmux{}
 
-	tmux.AttachSession("dev")
+	tmux.NewSession("dev")
 	tmux.MoveWindow(1, 2)
 
 	cmd := tmux.GetCommand()

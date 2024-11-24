@@ -6,15 +6,15 @@ import (
 )
 
 type Tmux struct {
-	Commands []string `exhaustruct:"optional"`
+	commands []string
 }
 
 func (t *Tmux) append(command string) {
-	t.Commands = append(t.Commands, command)
+	t.commands = append(t.commands, command)
 }
 
 func (t *Tmux) GetCommand() string {
-	commandString := strings.Join(t.Commands[:], " \\; ")
+	commandString := strings.Join(t.commands[:], " \\; ")
 	return fmt.Sprintf("tmux %s \\;", commandString)
 }
 
