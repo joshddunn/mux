@@ -1,67 +1,102 @@
 package tmux
 
 import (
-	"fmt"
-	"strings"
+	"log"
+	"os"
+	"os/exec"
+	"strconv"
+	"syscall"
 )
 
 type Tmux struct {
-	commands []string
+	SessionName string
+	binary      string
+	commands    []string
 }
 
-func (t *Tmux) append(command string) {
-	t.commands = append(t.commands, command)
+func Initialize(sessionName string) *Tmux {
+	binary, lookErr := exec.LookPath("tmux")
+	if lookErr != nil {
+		panic(lookErr)
+	}
+
+	return &Tmux{
+		SessionName: sessionName,
+		binary:      binary,
+		commands:    []string{},
+	}
 }
 
-func (t *Tmux) GetCommand() string {
-	commandString := strings.Join(t.commands[:], " \\; ")
-	return fmt.Sprintf("tmux %s \\;", commandString)
+// private
+
+func (t *Tmux) append(cmds ...string) {
+	t.commands = append(t.commands, append(cmds, ";")...)
+}
+
+func (t *Tmux) getCommand() []string {
+	return append([]string{"tmux"}, t.commands...)
+}
+
+// public
+
+func (t *Tmux) AttachIfSessionExists() {
+	cmd := exec.Command("tmux", "has-session", "-t", t.SessionName)
+	err := cmd.Run()
+
+	if err == nil {
+		t.AttachSession()
+		t.ExecCommand()
+	}
+}
+
+func (t *Tmux) ExecCommand() {
+	log.Fatal(syscall.Exec(t.binary, t.getCommand(), os.Environ()))
 }
 
 func (t *Tmux) ListSessions() {
 	t.append("ls")
 }
 
-func (t *Tmux) AttachSession(target string) {
-	t.append(fmt.Sprintf("attach-session -t %s", target))
+func (t *Tmux) AttachSession() {
+	t.append("attach-session", "-t", t.SessionName)
 }
 
-func (t *Tmux) KillSession(target string) {
-	t.append(fmt.Sprintf("kill-session -t %s", target))
+func (t *Tmux) KillSession() {
+	t.append("kill-session", "-t", t.SessionName)
 }
 
-func (t *Tmux) NewSession(target string) {
-	t.append(fmt.Sprintf("new-session -t %s", target))
+func (t *Tmux) NewSession() {
+	t.append("new-session", "-s", t.SessionName)
 }
 
 func (t *Tmux) KillWindow(target int) {
-	t.append(fmt.Sprintf("kill-window -t %d", target))
+	t.append("kill-window", "-t", strconv.Itoa(target))
 }
 
 func (t *Tmux) MoveWindow(target int, destination int) {
-	t.append(fmt.Sprintf("move-window -s %d -t %d", target, destination))
+	t.append("move-window", "-s", strconv.Itoa(target), "-t", strconv.Itoa(destination))
 }
 
-func (t *Tmux) NewWindow(target int) {
-	t.append(fmt.Sprintf("new-window -t %d", target))
+func (t *Tmux) NewWindow(name string) {
+	t.append("new-window", "-n", name)
 }
 
 func (t *Tmux) SelectWindow(target int) {
-	t.append(fmt.Sprintf("select-window -t %d", target))
+	t.append("select-window", "-t", strconv.Itoa(target))
 }
 
 func (t *Tmux) KillPane(target int) {
-	t.append(fmt.Sprintf("kill-pane -t %d", target))
+	t.append("kill-pane", "-t", strconv.Itoa(target))
 }
 
 func (t *Tmux) SelectPane(target int) {
-	t.append(fmt.Sprintf("select-pane -t %d", target))
+	t.append("select-pane", "-t", strconv.Itoa(target))
 }
 
 func (t *Tmux) SendKeys(keys string) {
-	t.append(fmt.Sprintf("send-keys '%s'", keys))
+	t.append("send-keys", keys)
 }
 
 func (t *Tmux) SendKeysEnter(keys string) {
-	t.append(fmt.Sprintf("send-keys '%s' Enter", keys))
+	t.append("send-keys", keys, "Enter")
 }
