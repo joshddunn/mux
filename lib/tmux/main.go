@@ -1,11 +1,18 @@
 package tmux
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"os/exec"
 	"strconv"
 	"syscall"
+)
+
+type Split string
+
+const (
+	Horizontal Split = "horizontal"
+	Vertical   Split = "vertical"
 )
 
 type Tmux struct {
@@ -33,33 +40,27 @@ func (t *Tmux) append(cmds ...string) {
 	t.commands = append(t.commands, append(cmds, ";")...)
 }
 
-func (t *Tmux) getCommand() []string {
-	return append([]string{"tmux"}, t.commands...)
-}
-
-func (t *Tmux) hasSession() bool {
-	cmd := exec.Command("tmux", "has-session", "-t", t.SessionName)
-	err := cmd.Run()
-
-	if err == nil {
-		return true
-	} else {
-		return false
-	}
-}
-
 // public
 
-func (t *Tmux) AttachSessionIfExists() {
-	if t.hasSession() {
-		t.AttachSession()
-		t.ExecCommand()
-	}
+func (t *Tmux) Exec() error {
+	args := append([]string{"tmux"}, t.commands...)
+	err := syscall.Exec(t.binary, args, os.Environ())
+
+	return err
 }
 
-func (t *Tmux) ExecCommand() {
-	log.Fatal(syscall.Exec(t.binary, t.getCommand(), os.Environ()))
+func (t *Tmux) Reset() {
+	t.commands = []string{}
 }
+
+func (t *Tmux) Run() error {
+	cmd := exec.Command("tmux", t.commands...)
+	err := cmd.Run()
+
+	return err
+}
+
+// public command builders
 
 func (t *Tmux) ListSessions() {
 	t.append("ls")
@@ -71,6 +72,10 @@ func (t *Tmux) AttachSession() {
 
 func (t *Tmux) KillSession() {
 	t.append("kill-session", "-t", t.SessionName)
+}
+
+func (t *Tmux) HasSession() {
+	t.append("has-session", "-t", t.SessionName)
 }
 
 func (t *Tmux) NewSession() {
@@ -91,6 +96,23 @@ func (t *Tmux) NewWindow(name string) {
 
 func (t *Tmux) SelectWindow(target int) {
 	t.append("select-window", "-t", strconv.Itoa(target))
+}
+
+func (t *Tmux) SplitWindow(dir string, split Split, percent int) {
+	cmd := []string{"split-window", "-c", dir}
+
+	switch split {
+	case Horizontal:
+		cmd = append(cmd, "-h")
+	case Vertical:
+		cmd = append(cmd, "-v")
+	}
+
+	if percent > 0 {
+		cmd = append(cmd, "-l", fmt.Sprintf("%d%%", percent))
+	}
+
+	t.append(cmd...)
 }
 
 func (t *Tmux) KillPane(target int) {

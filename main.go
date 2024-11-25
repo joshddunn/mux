@@ -7,14 +7,15 @@ package main
 // https://github.com/spf13/viper
 
 import (
+	"log"
 	"mux/lib/tmux"
 )
 
 func main() {
-	tmux := tmux.Initialize("bob")
-	tmux.AttachSessionIfExists()
+	t := tmux.Initialize("bob")
 
-	tmux.NewSession()
-	tmux.NewWindow("bob2")
-	tmux.ExecCommand()
+	t.NewSession()
+	t.NewWindow("bob2")
+	t.SplitWindow("~/code", tmux.Horizontal, 50)
+	log.Fatal(t.Exec())
 }
