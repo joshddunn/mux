@@ -57,6 +57,8 @@ func (t *Tmux) Run() error {
 	cmd := exec.Command("tmux", t.commands...)
 	err := cmd.Run()
 
+	t.Reset()
+
 	return err
 }
 

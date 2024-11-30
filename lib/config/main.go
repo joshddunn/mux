@@ -43,7 +43,7 @@ type Pane struct {
 	Execute *bool  `json:"execute"`
 }
 
-func Parse() Config {
+func Get() (Config, error) {
 	//exhaustruct:ignore
 	config := Config{}
 
@@ -64,11 +64,7 @@ func Parse() Config {
 	}
 
 	err = config.Validate()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return config
+	return config, err
 }
 
 func (config *Config) Validate() error {
@@ -125,6 +121,10 @@ func (session *Session) Validate() error {
 		err = errors.Join(err, errors.New("Session: Invalid selectWindow value"))
 	} else if !*session.ZeroIndex && (*session.SelectWindow < 1 || *session.SelectWindow > len(session.Windows)) {
 		err = errors.Join(err, errors.New("Session: Invalid selectWindow value"))
+	}
+
+	if len(session.Windows) == 0 {
+		err = errors.Join(err, errors.New("Session: A session must have at least one window"))
 	}
 
 	return err
