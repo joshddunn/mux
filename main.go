@@ -8,14 +8,18 @@ package main
 
 import (
 	"log"
-	"mux/lib/tmux"
+	"mux/lib/config"
 )
 
 func main() {
-	t := tmux.Initialize("bob")
+	log.SetFlags(0)
 
-	t.NewSession()
-	t.NewWindow("bob2")
-	t.SplitWindow("~/code", tmux.Horizontal, 50)
-	log.Fatal(t.Exec())
+	// t := tmux.Initialize("bob")
+
+	// t.NewSession()
+	// t.NewWindow("bob2")
+	// t.SplitWindow("~/code", tmux.Horizontal, 50)
+	// log.Fatal(t.Exec())
+
+	log.Print(config.Parse())
 }
