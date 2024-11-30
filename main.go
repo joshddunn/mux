@@ -1,13 +1,8 @@
 package main
 
-// https://github.com/alexflint/go-arg
-// https://github.com/alecthomas/kong
-// https://github.com/spf13/cobra
-// https://github.com/urfave/cli
-// https://github.com/spf13/viper
-
 import (
 	"log"
+	"math"
 	"mux/lib/config"
 	"mux/lib/tmux"
 	"os"
@@ -87,5 +82,74 @@ func StopCommand(name string) {
 }
 
 func BuildSession(session config.Session) {
-	log.Print(session)
+	t := tmux.Initialize(session.Name)
+	t.NewSession()
+
+	for _, window := range session.Windows {
+		t.NewWindow(window.Name)
+
+		for i, pane := range window.Panes {
+
+			switch *window.Layout {
+			case config.Default:
+				BuildDefaultLayout(t, window, i)
+			case config.Rows:
+				BuildBarsLayout(t, tmux.Horizontal, window.Panes, i)
+			case config.Columns:
+				BuildBarsLayout(t, tmux.Vertical, window.Panes, i)
+			}
+
+			if pane.Command != "" {
+				t.SendKeys(pane.Command, *pane.Execute)
+			}
+		}
+
+		t.SelectPane(1)
+	}
+
+	t.KillWindow(1)
+
+	for i := range session.Windows {
+		if *session.ZeroIndex {
+			t.MoveWindow(i+2, i)
+		} else {
+			t.MoveWindow(i+2, i+1)
+		}
+	}
+
+	t.SelectWindow(*session.SelectWindow)
+
+	err := t.Exec()
+	if err != nil {
+		log.Fatal("Something went wrong")
+	}
+}
+
+func BuildBarsLayout(t *tmux.Tmux, split tmux.Split, panes []config.Pane, paneIndex int) {
+	pane := panes[paneIndex]
+	percent := splitPercent(paneIndex, len(panes))
+	t.SplitWindow(pane.Dir, split, percent)
+
+	if paneIndex == 0 {
+		t.KillPane(1)
+	}
+}
+
+func BuildDefaultLayout(t *tmux.Tmux, window config.Window, paneIndex int) {
+	pane := window.Panes[paneIndex]
+
+	switch paneIndex {
+	case 0:
+		t.SplitWindow(pane.Dir, tmux.Vertical, *window.SplitPercent)
+		t.KillPane(1)
+	case 1:
+		t.SplitWindow(pane.Dir, tmux.Horizontal, *window.SplitPercent)
+	default:
+		percent := splitPercent(paneIndex, len(window.Panes))
+		t.SplitWindow(pane.Dir, tmux.Vertical, percent)
+	}
+}
+
+func splitPercent(index int, count int) int {
+	return int(math.Ceil(100 - 100/float64(count-index+1)))
 }

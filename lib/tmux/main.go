@@ -125,10 +125,12 @@ func (t *Tmux) SelectPane(target int) {
 	t.append("select-pane", "-t", strconv.Itoa(target))
 }
 
-func (t *Tmux) SendKeys(keys string) {
-	t.append("send-keys", keys)
-}
+func (t *Tmux) SendKeys(keys string, enter bool) {
+	args := []string{"send-keys", keys}
 
-func (t *Tmux) SendKeysEnter(keys string) {
-	t.append("send-keys", keys, "Enter")
+	if enter {
+		args = append(args, "Enter")
+	}
+
+	t.append(args...)
 }
