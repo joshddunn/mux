@@ -1,97 +1,11 @@
 package config
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
-	"log"
 	"mux/lib/helpers"
-	"os"
 )
 
-type Layout string
-
-const (
-	Default Layout = "default"
-	Columns Layout = "columns"
-	Rows    Layout = "rows"
-)
-
-type Config struct {
-	Sessions []Session
-}
-
-type Session struct {
-	Name         string   `json:"name"`
-	Dir          string   `json:"dir"`
-	ZeroIndex    *bool    `json:"zeroIndex"`
-	SelectWindow *int     `json:"selectWindow"`
-	Windows      []Window `json:"windows"`
-}
-
-type Window struct {
-	Name         string  `json:"name"`
-	Dir          string  `json:"dir"`
-	Layout       *Layout `json:"layout"`
-	SplitPercent *int    `json:"splitPercent"`
-	Panes        []Pane  `json:"panes"`
-}
-
-type Pane struct {
-	Dir     string `json:"dir"`
-	Command string `json:"command"`
-	Execute *bool  `json:"execute"`
-}
-
-func Get() (Config, error) {
-	//exhaustruct:ignore
-	config := Config{}
-
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dir := fmt.Sprintf("%s/.mux.json", homeDir)
-	file, err := os.ReadFile(dir)
-	if err != nil {
-		log.Fatal("Config file not found")
-	}
-
-	err = json.Unmarshal(file, &config)
-	if err != nil {
-		log.Fatal("Invalid config file")
-	}
-
-	err = config.Validate()
-	return config, err
-}
-
-func (config *Config) Validate() error {
-	var err error
-
-	for sessionIndex := range config.Sessions {
-		session := &config.Sessions[sessionIndex]
-		e := session.Validate()
-		err = errors.Join(err, e)
-
-		for windowIndex := range session.Windows {
-			window := &session.Windows[windowIndex]
-			e := window.Validate(*session)
-			err = errors.Join(err, e)
-
-			for paneIndex := range window.Panes {
-				pane := &window.Panes[paneIndex]
-				e := pane.Validate(*window)
-				err = errors.Join(err, e)
-			}
-		}
-	}
-
-	return err
-}
-
-func (session *Session) Validate() error {
+func (session *Session) validate() error {
 	var err error
 
 	if session.Name == "" {
@@ -100,11 +14,8 @@ func (session *Session) Validate() error {
 
 	if session.Dir == "" {
 		err = errors.Join(err, errors.New("Session: Dir is required"))
-	} else {
-		exists := helpers.DirectoryExists(session.Dir)
-		if !exists {
-			err = errors.Join(err, errors.New("Session: Invalid directory"))
-		}
+	} else if !helpers.DirectoryExists(session.Dir) {
+		err = errors.Join(err, errors.New("Session: Invalid directory"))
 	}
 
 	if session.ZeroIndex == nil {
@@ -130,15 +41,14 @@ func (session *Session) Validate() error {
 	return err
 }
 
-func (window *Window) Validate(session Session) error {
+func (window *Window) validate(session Session) error {
 	var err error
 
 	if window.Dir == "" {
 		window.Dir = session.Dir
 	}
 
-	exists := helpers.DirectoryExists(window.Dir)
-	if !exists {
+	if !helpers.DirectoryExists(window.Dir) {
 		err = errors.Join(err, errors.New("Window: Invalid directory"))
 	}
 
@@ -170,15 +80,14 @@ func (window *Window) Validate(session Session) error {
 	return err
 }
 
-func (pane *Pane) Validate(window Window) error {
+func (pane *Pane) validate(window Window) error {
 	var err error
 
 	if pane.Dir == "" {
 		pane.Dir = window.Dir
 	}
 
-	exists := helpers.DirectoryExists(pane.Dir)
-	if !exists {
+	if !helpers.DirectoryExists(pane.Dir) {
 		err = errors.Join(err, errors.New("Pane: Invalid directory"))
 	}
 

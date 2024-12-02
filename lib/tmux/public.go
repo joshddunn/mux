@@ -8,23 +8,10 @@ import (
 	"syscall"
 )
 
-type Split string
-
-const (
-	Horizontal Split = "horizontal"
-	Vertical   Split = "vertical"
-)
-
-type Tmux struct {
-	SessionName string
-	binary      string
-	commands    []string
-}
-
 func Initialize(sessionName string) *Tmux {
-	binary, lookErr := exec.LookPath("tmux")
-	if lookErr != nil {
-		panic(lookErr)
+	binary, err := exec.LookPath("tmux")
+	if err != nil {
+		panic(err)
 	}
 
 	return &Tmux{
@@ -34,19 +21,12 @@ func Initialize(sessionName string) *Tmux {
 	}
 }
 
-// private
-
-func (t *Tmux) append(cmds ...string) {
-	t.commands = append(t.commands, append(cmds, ";")...)
-}
-
-// public
-
-func (t *Tmux) Exec() error {
+func (t *Tmux) Exec() {
 	args := append([]string{"tmux"}, t.commands...)
 	err := syscall.Exec(t.binary, args, os.Environ())
-
-	return err
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (t *Tmux) Reset() {
@@ -61,8 +41,6 @@ func (t *Tmux) Run() error {
 
 	return err
 }
-
-// public command builders
 
 func (t *Tmux) ListSessions() {
 	t.append("ls")
