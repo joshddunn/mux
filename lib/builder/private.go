@@ -40,6 +40,8 @@ func buildSession(session config.Session) {
 				t.KillPane(1)
 			}
 
+			t.SendKeys("clear", true)
+
 			if pane.Command != "" {
 				t.SendKeys(pane.Command, *pane.Execute)
 			}
