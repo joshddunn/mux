@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
+	"syscall"
 )
 
 func Get() Config {
@@ -58,4 +60,26 @@ func (config *Config) Validate() error {
 	}
 
 	return err
+}
+
+func EditConfig() {
+	editor := os.Getenv("EDITOR")
+
+	binary, err := exec.LookPath(editor)
+	if err != nil {
+		panic(err)
+	}
+
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	config := fmt.Sprintf("%s/%s", homedir, ConfigFile)
+
+	args := append([]string{editor}, config)
+	err = syscall.Exec(binary, args, os.Environ())
+	if err != nil {
+		panic(err)
+	}
 }

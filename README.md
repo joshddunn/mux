@@ -13,6 +13,7 @@ brew install joshddunn/tap/mux
 
 | command           | description |
 | ----------------- | ----------- |
+| config            |             |
 | start \<session\> |             |
 | stop \<session\>  |             |
 
