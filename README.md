@@ -39,13 +39,13 @@ The config file for `mux` is `~/.mux.json`
 
 ### Window Config
 
-| key          | required | default               | values                 | description                      |
-| ------------ | -------- | --------------------- | ---------------------- | -------------------------------- |
-| name         | yes      |                       | \<string\>             |                                  |
-| dir          | no       | \<Session directory\> | \<directory\>          |                                  |
-| layout       | no       | default               | default, columns, rows |                                  |
-| splitPercent | no       | 35                    | \<number\>             | Only used for the default layout |
-| panes        | no       | []                    | \<Pane Config\>        | Array of Pane configs            |
+| key          | required | default               | values                 | description                               |
+| ------------ | -------- | --------------------- | ---------------------- | ----------------------------------------- |
+| name         | yes      |                       | \<string\>             |                                           |
+| dir          | no       | \<Session directory\> | \<directory\>          |                                           |
+| layout       | no       | default               | default, columns, rows |                                           |
+| splitPercent | no       | 35                    | \<number\>             | Only relevant if using the default layout |
+| panes        | no       | []                    | \<Pane Config\>        | Array of Pane configs                     |
 
 ### Pane Config
 
