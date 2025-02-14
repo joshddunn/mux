@@ -1,5 +1,7 @@
 # mux
 
+Version: v0.1.3 (unreleased)
+
 `mux` is a command line tool to manage tmux sessions. Can be installed with
 
 ## Install
@@ -11,49 +13,49 @@ brew install joshddunn/tap/mux
 
 ## Commands
 
-| command           | description |
-| ----------------- | ----------- |
-| config            |             |
-| start \<session\> |             |
-| stop \<session\>  |             |
+| command           | description                                 |
+| ----------------- | ------------------------------------------- |
+| config            | Open config file (~/.mux.json) with $EDITOR |
+| start \<session\> | Start session in config file                |
+| stop \<session\>  | Stop session in config file                 |
 
-## Configuration
+## Config
 
-The configuration file for `mux` is `~/.mux.json`
+The config file for `mux` is `~/.mux.json`
 
-| key      | required | default | values                    | description                     |
-| -------- | -------- | ------- | ------------------------- | ------------------------------- |
-| sessions | yes      | []      | \<Session Configuration\> | Array of Session configurations |
+| key      | required | default | values             | description              |
+| -------- | -------- | ------- | ------------------ | ------------------------ |
+| sessions | yes      | []      | \<Session Config\> | Array of Session configs |
 
-### Session Configuration
+### Session Config
 
-| key          | required | default | values                   | description                    |
-| ------------ | -------- | ------- | ------------------------ | ------------------------------ |
-| name         | yes      |         | \<string\>               |                                |
-| dir          | yes      |         | \<directory\>            |                                |
-| zeroIndex    | no       | false   | \<boolean\>              |                                |
-| selectWindow | no       | 1       | \<number\>               |                                |
-| windows      | no       | []      | \<Window Configuration\> | Array of Window configurations |
+| key          | required | default | values            | description             |
+| ------------ | -------- | ------- | ----------------- | ----------------------- |
+| name         | yes      |         | \<string\>        |                         |
+| dir          | yes      |         | \<directory\>     |                         |
+| zeroIndex    | no       | false   | \<boolean\>       |                         |
+| selectWindow | no       | 1       | \<number\>        |                         |
+| windows      | no       | []      | \<Window Config\> | Array of Window configs |
 
-### Window Configuration
+### Window Config
 
 | key          | required | default               | values                 | description                      |
 | ------------ | -------- | --------------------- | ---------------------- | -------------------------------- |
 | name         | yes      |                       | \<string\>             |                                  |
-| dir          | no       | \<Session directory\> | \<string\>             |                                  |
+| dir          | no       | \<Session directory\> | \<directory\>          |                                  |
 | layout       | no       | default               | default, columns, rows |                                  |
 | splitPercent | no       | 35                    | \<number\>             | Only used for the default layout |
-| panes        | no       | []                    | \<Pane Configuration\> |                                  |
+| panes        | no       | []                    | \<Pane Config\>        | Array of Pane configs            |
 
-### Pane Configuration
+### Pane Config
 
-| key     | required | default              | values      | description |
-| ------- | -------- | -------------------- | ----------- | ----------- |
-| dir     | no       | \<Window directory\> |             |             |
-| command | no       |                      | \<string\>  |             |
-| execute | no       | true                 | \<boolean\> |             |
+| key     | required | default              | values        | description                         |
+| ------- | -------- | -------------------- | ------------- | ----------------------------------- |
+| dir     | no       | \<Window directory\> | \<directory\> |                                     |
+| command | no       |                      | \<string\>    |                                     |
+| execute | no       | true                 | \<boolean\>   | Only relevant if command is defined |
 
-### Example Configuration
+### Example Config
 
 ```json
 {
