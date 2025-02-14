@@ -9,6 +9,13 @@ brew tap joshddunn/tap
 brew install joshddunn/tap/mux
 ```
 
+## Commands
+
+| command         | description |
+| --------------- | ----------- |
+| start <session> |             |
+| stop <session>  |             |
+
 ## Configuration
 
 The configuration file for `mux` is `~/.mux.json`
