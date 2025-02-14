@@ -80,14 +80,3 @@ The config file for `mux` is `~/.mux.json`
   ]
 }
 ```
-
-## Development
-
-### Shasum
-
-Run the following commands to get the sha256 value
-
-```sh
-curl -sL https://github.com/joshddunn/mux/archive/refs/tags/<VERSION>.tar.gz > <VERSION>.tar.gz
-shasum --algorithm 256 ./<VERSION>.tar.gz
-```
