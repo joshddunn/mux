@@ -11,46 +11,46 @@ brew install joshddunn/tap/mux
 
 ## Commands
 
-| command         | description |
-| --------------- | ----------- |
-| start <session> |             |
-| stop <session>  |             |
+| command           | description |
+| ----------------- | ----------- |
+| start \<session\> |             |
+| stop \<session\>  |             |
 
 ## Configuration
 
 The configuration file for `mux` is `~/.mux.json`
 
-| key      | required | default | values                  | description                     |
-| -------- | -------- | ------- | ----------------------- | ------------------------------- |
-| sessions | yes      | []      | <Session Configuration> | Array of Session configurations |
+| key      | required | default | values                    | description                     |
+| -------- | -------- | ------- | ------------------------- | ------------------------------- |
+| sessions | yes      | []      | \<Session Configuration\> | Array of Session configurations |
 
 ### Session Configuration
 
-| key          | required | default | values                 | description                    |
-| ------------ | -------- | ------- | ---------------------- | ------------------------------ |
-| name         | yes      |         | <string>               |                                |
-| dir          | yes      |         | <directory>            |                                |
-| zeroIndex    | no       | false   | <boolean>              |                                |
-| selectWindow | no       | 1       | <number>               |                                |
-| windows      | no       | []      | <Window Configuration> | Array of Window configurations |
+| key          | required | default | values                   | description                    |
+| ------------ | -------- | ------- | ------------------------ | ------------------------------ |
+| name         | yes      |         | \<string\>               |                                |
+| dir          | yes      |         | \<directory\>            |                                |
+| zeroIndex    | no       | false   | \<boolean\>              |                                |
+| selectWindow | no       | 1       | \<number\>               |                                |
+| windows      | no       | []      | \<Window Configuration\> | Array of Window configurations |
 
 ### Window Configuration
 
-| key          | required | default             | values                 | description                      |
-| ------------ | -------- | ------------------- | ---------------------- | -------------------------------- |
-| name         | yes      |                     | <string>               |                                  |
-| dir          | no       | <Session directory> | <string>               |                                  |
-| layout       | no       | default             | default, columns, rows |                                  |
-| splitPercent | no       | 35                  | <number>               | Only used for the default layout |
-| panes        | no       | []                  | <Pane Configuration>   |                                  |
+| key          | required | default               | values                 | description                      |
+| ------------ | -------- | --------------------- | ---------------------- | -------------------------------- |
+| name         | yes      |                       | \<string\>             |                                  |
+| dir          | no       | \<Session directory\> | \<string\>             |                                  |
+| layout       | no       | default               | default, columns, rows |                                  |
+| splitPercent | no       | 35                    | \<number\>             | Only used for the default layout |
+| panes        | no       | []                    | \<Pane Configuration\> |                                  |
 
 ### Pane Configuration
 
-| key     | required | default            | values    | description |
-| ------- | -------- | ------------------ | --------- | ----------- |
-| dir     | no       | <Window directory> |           |             |
-| command | no       |                    | <string>  |             |
-| execute | no       | true               | <boolean> |             |
+| key     | required | default              | values      | description |
+| ------- | -------- | -------------------- | ----------- | ----------- |
+| dir     | no       | \<Window directory\> |             |             |
+| command | no       |                      | \<string\>  |             |
+| execute | no       | true                 | \<boolean\> |             |
 
 ### Example Configuration
 
