@@ -13,7 +13,7 @@ const (
 	Help    = "help"
 	Start   = "start"
 	Stop    = "stop"
-	Version = "v0.1.3"
+	Version = "v0.1.2"
 )
 
 func main() {

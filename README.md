@@ -1,6 +1,6 @@
 # mux
 
-Version: v0.1.3
+Version: v0.1.2
 
 `mux` is a command line tool to manage tmux sessions. Can be installed with
 
