@@ -1,6 +1,13 @@
 # mux
 
-How to get shasum
+`mux` is a command line tool to manage tmux sessions. Can be installed with
+
+## Install
+
+```sh
+brew tap joshddunn/tap
+brew install joshddunn/tap/mux
+```
 
 ## Configuration
 
