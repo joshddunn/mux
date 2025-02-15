@@ -2,7 +2,7 @@
 
 Version: v0.1.2
 
-`mux` is a command line tool to manage tmux sessions. Can be installed with
+`mux` is a command line tool to manage tmux sessions.
 
 ## Install
 
@@ -76,6 +76,22 @@ The config file for `mux` is `~/.mux.json`
           "panes": [{}, {}, {}]
         }
       ]
+    }
+  ]
+}
+```
+
+### Config Validation
+
+If you use `neovim`, `coc`, and the `coc-json` plugin, add the following to the `coc-settings.json` file to validate the config file.
+
+```json
+{
+  ...
+  "json.schemas": [
+    {
+      "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/mux.schema.json",
+      "fileMatch": [".mux.json"]
     }
   ]
 }
