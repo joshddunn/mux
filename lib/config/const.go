@@ -1,8 +1,8 @@
 package config
 
 const (
-	Default    Layout = "default"
-	Columns    Layout = "columns"
-	Rows       Layout = "rows"
-	ConfigFile        = ".mux.json"
+	Default Layout = "default"
+	Columns Layout = "columns"
+	Rows    Layout = "rows"
+	File           = ".mux.json"
 )

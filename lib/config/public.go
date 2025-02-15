@@ -19,7 +19,7 @@ func Get() Config {
 		panic(err)
 	}
 
-	dir := fmt.Sprintf("%s/.mux.json", homeDir)
+	dir := fmt.Sprintf("%s/%s", homeDir, File)
 	file, err := os.ReadFile(dir)
 	if err != nil {
 		log.Fatal("Config file not found")
@@ -75,7 +75,7 @@ func EditConfig() {
 		panic(err)
 	}
 
-	config := fmt.Sprintf("%s/%s", homedir, ConfigFile)
+	config := fmt.Sprintf("%s/%s", homedir, File)
 
 	args := append([]string{editor}, config)
 	err = syscall.Exec(binary, args, os.Environ())
