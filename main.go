@@ -10,23 +10,26 @@ import (
 )
 
 const (
-	Config  = "config"
-	Help    = "help"
-	Start   = "start"
-	Stop    = "stop"
-	Version = "v0.1.3"
+	Config = "config"
+	Help   = "help"
+	Start  = "start"
+	Stop   = "stop"
+)
+
+var (
+	version = "dev"
 )
 
 func main() {
 	log.SetFlags(0)
 	args := os.Args[1:]
 
-	version := flag.Bool("version", false, "mux version")
+	versionFlag := flag.Bool("version", false, "mux version")
 
 	flag.Parse()
 
-	if *version {
-		log.Print(Version)
+	if *versionFlag {
+		log.Print(version)
 		os.Exit(0)
 	}
 
