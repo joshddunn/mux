@@ -84,13 +84,10 @@ The config file for `mux` is `~/.mux.json`
 If you use `neovim`, `coc`, and the `coc-json` plugin, add the following to the `coc-settings.json` file to validate the config file.
 
 ```json
+"json.schemas": [
 {
-  // ...
-  "json.schemas": [
-    {
-      "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/embed/config.schema.json",
-      "fileMatch": [".mux.json"]
-    }
-  ]
+  "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/embed/config.schema.json",
+  "fileMatch": [".mux.json"]
 }
+]
 ```
