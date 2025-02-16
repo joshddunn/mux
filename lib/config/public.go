@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"mux/embed"
+	"mux/lib/helpers"
 	"os"
 	"os/exec"
 	"syscall"
@@ -13,17 +14,15 @@ import (
 	"github.com/xeipuuv/gojsonschema"
 )
 
+func ConfigDir() string {
+	return fmt.Sprintf("%s/%s", helpers.HomeDir(), File)
+}
+
 func Get() Config {
 	//exhaustruct:ignore
 	config := Config{}
 
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	dir := fmt.Sprintf("%s/%s", homeDir, File)
-	file, err := os.ReadFile(dir)
+	file, err := os.ReadFile(ConfigDir())
 	if err != nil {
 		log.Fatal("Config file not found")
 	}
@@ -44,13 +43,8 @@ func Get() Config {
 func (config *Config) Validate() error {
 	var err error
 
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
 	schemaLoader := gojsonschema.NewStringLoader(embed.ConfigSchema)
-	configLoader := gojsonschema.NewReferenceLoader(fmt.Sprintf("file://%s/%s", homeDir, File))
+	configLoader := gojsonschema.NewReferenceLoader(fmt.Sprintf("file://%s", ConfigDir()))
 
 	result, err := gojsonschema.Validate(schemaLoader, configLoader)
 	if err != nil {
@@ -93,14 +87,7 @@ func EditConfig() {
 		panic(err)
 	}
 
-	homedir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	config := fmt.Sprintf("%s/%s", homedir, File)
-
-	args := append([]string{editor}, config)
+	args := append([]string{editor}, ConfigDir())
 	err = syscall.Exec(binary, args, os.Environ())
 	if err != nil {
 		panic(err)

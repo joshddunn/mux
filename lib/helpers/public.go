@@ -10,12 +10,7 @@ func Pointer[T any](d T) *T {
 }
 
 func DirectoryExists(dir string) bool {
-	homedir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	fullpath := strings.Replace(dir, "~", homedir, 1)
+	fullpath := strings.Replace(dir, "~", HomeDir(), 1)
 	stat, err := os.Stat(fullpath)
 
 	if err == nil {
@@ -27,4 +22,13 @@ func DirectoryExists(dir string) bool {
 	}
 
 	panic(err)
+}
+
+func HomeDir() string {
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	return homedir
 }

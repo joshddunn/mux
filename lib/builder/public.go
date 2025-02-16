@@ -10,11 +10,13 @@ func StartSession(name string) {
 	t := tmux.Initialize(name)
 	t.HasSession()
 
+	config := config.Get()
+
 	if t.Run() == nil {
 		t.AttachSession()
 		t.Exec()
 	} else {
-		session := findSession(name, config.Get().Sessions)
+		session := findSession(name, config.Sessions)
 		if session == nil {
 			log.Fatal("Session doesn't exist in configuration")
 		}
