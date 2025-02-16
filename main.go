@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"flag"
 	"log"
 	"mux/lib/builder"
@@ -13,7 +14,7 @@ const (
 	Help    = "help"
 	Start   = "start"
 	Stop    = "stop"
-	Version = "v0.1.2"
+	Version = "v0.1.3"
 )
 
 func main() {

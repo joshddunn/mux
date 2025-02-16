@@ -5,9 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"mux/embed"
 	"os"
 	"os/exec"
 	"syscall"
+
+	"github.com/xeipuuv/gojsonschema"
 )
 
 func Get() Config {
@@ -40,6 +43,26 @@ func Get() Config {
 
 func (config *Config) Validate() error {
 	var err error
+
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	schemaLoader := gojsonschema.NewStringLoader(embed.ConfigSchema)
+	configLoader := gojsonschema.NewReferenceLoader(fmt.Sprintf("file://%s/%s", homeDir, File))
+
+	result, err := gojsonschema.Validate(schemaLoader, configLoader)
+	if err != nil {
+		panic(err)
+	}
+
+	if !result.Valid() {
+		for _, e := range result.Errors() {
+			message := fmt.Sprintf("%s %s", e.Field(), e.Description())
+			err = errors.Join(err, errors.New(message))
+		}
+	}
 
 	for sessionIndex := range config.Sessions {
 		session := &config.Sessions[sessionIndex]

@@ -1,7 +1,5 @@
 # mux
 
-Version: v0.1.2
-
 `mux` is a command line tool to manage tmux sessions.
 
 ## Install
@@ -90,7 +88,7 @@ If you use `neovim`, `coc`, and the `coc-json` plugin, add the following to the 
   ...
   "json.schemas": [
     {
-      "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/mux.schema.json",
+      "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/embed/config.schema.json",
       "fileMatch": [".mux.json"]
     }
   ]
