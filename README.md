@@ -5,7 +5,6 @@
 ## Install
 
 ```sh
-brew tap joshddunn/tap
 brew install joshddunn/tap/mux
 ```
 
