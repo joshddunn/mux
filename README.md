@@ -85,9 +85,9 @@ If you use `neovim`, `coc`, and the `coc-json` plugin, add the following to the 
 
 ```json
 "json.schemas": [
-{
-  "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/embed/config.schema.json",
-  "fileMatch": [".mux.json"]
-}
+    {
+      "url": "https://raw.githubusercontent.com/joshddunn/mux/refs/heads/main/embed/config.schema.json",
+      "fileMatch": [".mux.json"]
+    }
 ]
 ```
