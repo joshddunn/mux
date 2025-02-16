@@ -14,16 +14,14 @@ func (session *Session) validate() error {
 	}
 
 	if session.SelectWindow == nil {
+		session.SelectWindow = helpers.Pointer(1)
 		if *session.ZeroIndex {
 			session.SelectWindow = helpers.Pointer(0)
-		} else {
-			session.SelectWindow = helpers.Pointer(1)
 		}
 	}
 
 	if !helpers.DirectoryExists(session.Dir) {
-		message := fmt.Sprintf("%s does not exist", session.Dir)
-		err = errors.Join(err, errors.New(message))
+		err = errors.Join(err, directoryNotFoundError(session.Dir))
 	}
 
 	return err
@@ -35,15 +33,14 @@ func (window *Window) validate(session Session) error {
 	if window.Dir == "" {
 		window.Dir = session.Dir
 	} else if !helpers.DirectoryExists(window.Dir) {
-		message := fmt.Sprintf("%s does not exist", window.Dir)
-		err = errors.Join(err, errors.New(message))
+		err = errors.Join(err, directoryNotFoundError(window.Dir))
 	}
 
 	if window.Layout == nil {
 		window.Layout = helpers.Pointer(Default)
 	}
 
-	if window.SplitPercent == nil && *window.Layout == Default {
+	if window.SplitPercent == nil {
 		window.SplitPercent = helpers.Pointer(35)
 	}
 
@@ -56,8 +53,7 @@ func (pane *Pane) validate(window Window) error {
 	if pane.Dir == "" {
 		pane.Dir = window.Dir
 	} else if !helpers.DirectoryExists(pane.Dir) {
-		message := fmt.Sprintf("%s does not exist", pane.Dir)
-		err = errors.Join(err, errors.New(message))
+		err = errors.Join(err, directoryNotFoundError(pane.Dir))
 	}
 
 	if pane.Execute == nil {
@@ -65,4 +61,8 @@ func (pane *Pane) validate(window Window) error {
 	}
 
 	return err
+}
+
+func directoryNotFoundError(dir string) error {
+	return errors.New(fmt.Sprintf("%s does not exist", dir))
 }

@@ -24,12 +24,12 @@ func Get() Config {
 
 	file, err := os.ReadFile(ConfigDir())
 	if err != nil {
-		log.Fatal("Config file not found")
+		log.Fatal(fmt.Sprintf("~/%s does not exist", File))
 	}
 
 	err = json.Unmarshal(file, &config)
 	if err != nil {
-		log.Fatal("Invalid config file")
+		log.Fatal(fmt.Sprintf("~/%s cannot be parsed", File))
 	}
 
 	err = config.Validate()

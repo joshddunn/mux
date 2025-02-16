@@ -19,35 +19,38 @@ const (
 
 func main() {
 	log.SetFlags(0)
-	cmd := os.Args[1]
-	args := os.Args[2:]
+	args := os.Args[1:]
 
-	versionPtr := flag.Bool("version", false, "mux version")
+	version := flag.Bool("version", false, "mux version")
 
 	flag.Parse()
 
-	if *versionPtr {
+	if *version {
 		log.Print(Version)
 		os.Exit(0)
 	}
 
-	switch cmd {
+	if len(args) == 0 {
+		log.Fatal("Invalid command")
+	}
+
+	switch args[0] {
 	case Config:
 		config.EditConfig()
 	case Help:
 		log.Print("https://github.com/joshddunn/mux")
 	case Start:
-		startSession(args)
+		startSession(args[1:])
 	case Stop:
-		stopSession(args)
+		stopSession(args[1:])
 	default:
-		log.Fatal("Invalid command line argument")
+		log.Fatal("Invalid command")
 	}
 }
 
 func startSession(args []string) {
 	if len(args) != 1 {
-		log.Fatal("Invalid command line args")
+		log.Fatal("Invalid command. Usage: mux start <session>")
 	}
 
 	builder.StartSession(args[0])
@@ -55,7 +58,7 @@ func startSession(args []string) {
 
 func stopSession(args []string) {
 	if len(args) != 1 {
-		log.Fatal("Invalid command line args")
+		log.Fatal("Invalid command. Usage: mux stop <session>")
 	}
 
 	builder.StopSession(args[0])
