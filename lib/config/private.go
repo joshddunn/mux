@@ -20,6 +20,18 @@ func (session *Session) validate() error {
 		}
 	}
 
+	minWindowIndex := 1
+	maxWindowIndex := len(session.Windows)
+	if *session.ZeroIndex {
+		minWindowIndex--
+		maxWindowIndex--
+	}
+
+	if *session.SelectWindow < minWindowIndex || *session.SelectWindow > maxWindowIndex {
+		message := fmt.Sprintf("selectWindow must be between %d and %d", minWindowIndex, maxWindowIndex)
+		err = errors.Join(err, errors.New(message))
+	}
+
 	if !helpers.DirectoryExists(session.Dir) {
 		err = errors.Join(err, directoryNotFoundError(session.Dir))
 	}
