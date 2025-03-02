@@ -28,7 +28,7 @@ func (session *Session) validate() error {
 	}
 
 	if *session.SelectWindow < minWindowIndex || *session.SelectWindow > maxWindowIndex {
-		message := fmt.Sprintf("selectWindow must be between %d and %d", minWindowIndex, maxWindowIndex)
+		message := fmt.Sprintf("selectWindow must be between %d and %d.", minWindowIndex, maxWindowIndex)
 		err = errors.Join(err, errors.New(message))
 	}
 
@@ -76,5 +76,6 @@ func (pane *Pane) validate(window Window) error {
 }
 
 func directoryNotFoundError(dir string) error {
-	return errors.New(fmt.Sprintf("%s does not exist", dir))
+	message := fmt.Sprintf("Directory `%s` does not exist.", dir)
+	return errors.New(message)
 }

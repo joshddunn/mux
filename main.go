@@ -36,7 +36,7 @@ func main() {
 	}
 
 	if len(args) == 0 {
-		log.Fatal("Please enter a command")
+		log.Fatal("Please enter a command.")
 	}
 
 	switch args[0] {
@@ -51,7 +51,7 @@ func main() {
 	case Stop:
 		stopSession(args[1:])
 	default:
-		log.Fatal("Invalid command")
+		log.Fatal("Invalid command.")
 	}
 
 	os.Exit(0)
@@ -86,6 +86,7 @@ func completion(shell string) {
 	case "zsh":
 		fmt.Println(embed.MuxZsh)
 	default:
-		log.Fatal(fmt.Sprintf("Completion is not available for `%s`", shell))
+		message := fmt.Sprintf("Completion is not available for `%s` shell.", shell)
+		log.Fatal(message)
 	}
 }

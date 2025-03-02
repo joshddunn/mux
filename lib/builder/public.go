@@ -19,7 +19,8 @@ func StartSession(name string) {
 	} else {
 		session := findSession(name, c.Sessions)
 		if session == nil {
-			log.Fatal(fmt.Sprintf("%s not found in ~/%s", name, config.File))
+			message := fmt.Sprintf("Session `%s` not defined in ~/%s", name, config.File)
+			log.Fatal(message)
 		}
 
 		buildSession(*session)
@@ -30,6 +31,7 @@ func StopSession(name string) {
 	t := tmux.Initialize(name)
 	t.KillSession()
 	if t.Run() != nil {
-		log.Fatal(fmt.Sprintf("%s is not an active session", name))
+		message := fmt.Sprintf("`%s` is not an active session", name)
+		log.Fatal(message)
 	}
 }

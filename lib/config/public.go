@@ -24,12 +24,14 @@ func Get() Config {
 
 	file, err := os.ReadFile(ConfigDir())
 	if err != nil {
-		log.Fatal(fmt.Sprintf("~/%s does not exist", File))
+		message := fmt.Sprintf("Config file (~/%s) does not exist. Run `mux config` and setup a config file.", File)
+		log.Fatal(message)
 	}
 
 	err = json.Unmarshal(file, &config)
 	if err != nil {
-		log.Fatal(fmt.Sprintf("~/%s cannot be parsed", File))
+		message := fmt.Sprintf("Config file (~/%s) cannot be parsed.", File)
+		log.Fatal(message)
 	}
 
 	err = config.Validate()
