@@ -53,6 +53,8 @@ func main() {
 	default:
 		log.Fatal("Invalid command")
 	}
+
+	os.Exit(0)
 }
 
 func startSession(args []string) {
