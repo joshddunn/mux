@@ -24,6 +24,7 @@
           },
           "windows": {
             "type": "array",
+            "minItems": 1,
             "items": {
               "type": "object",
               "properties": {
@@ -46,6 +47,7 @@
                 },
                 "panes": {
                   "type": "array",
+                  "minItems": 1,
                   "items": {
                     "type": "object",
                     "properties": {
