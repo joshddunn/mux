@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"mux/lib/builder"
 	"mux/lib/config"
@@ -10,7 +11,7 @@ import (
 
 const (
 	Config = "config"
-	Help   = "help"
+	List   = "list"
 	Start  = "start"
 	Stop   = "stop"
 )
@@ -39,12 +40,12 @@ func main() {
 	switch args[0] {
 	case Config:
 		config.EditConfig()
-	case Help:
-		log.Print("https://github.com/joshddunn/mux")
 	case Start:
 		startSession(args[1:])
 	case Stop:
 		stopSession(args[1:])
+	case List:
+		listSessions()
 	default:
 		log.Fatal("Invalid command")
 	}
@@ -64,4 +65,12 @@ func stopSession(args []string) {
 	}
 
 	builder.StopSession(args[0])
+}
+
+func listSessions() {
+	sessions := config.Get().Sessions
+
+	for _, s := range sessions {
+		fmt.Println(s.Name)
+	}
 }

@@ -13,7 +13,7 @@ brew install joshddunn/tap/mux
 | command           | description                                     |
 | ----------------- | ----------------------------------------------- |
 | config            | Open config file (`~/.mux.json`) with `$EDITOR` |
-| help              | Link to GitHub homepage                         |
+| list              | List sessions in config file                    |
 | start \<session\> | Start session in config file                    |
 | stop \<session\>  | Stop session in config file                     |
 
