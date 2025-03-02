@@ -11,11 +11,11 @@ import (
 )
 
 const (
+	Completion = "completion"
 	Config     = "config"
 	List       = "list"
 	Start      = "start"
 	Stop       = "stop"
-	Completion = "completion"
 )
 
 var (
@@ -40,16 +40,16 @@ func main() {
 	}
 
 	switch args[0] {
+	case Completion:
+		completion(args[1])
 	case Config:
 		config.EditConfig()
+	case List:
+		listSessions()
 	case Start:
 		startSession(args[1:])
 	case Stop:
 		stopSession(args[1:])
-	case List:
-		listSessions()
-	case Completion:
-		completion(args[1])
 	default:
 		log.Fatal("Invalid command")
 	}
