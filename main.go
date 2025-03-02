@@ -82,8 +82,8 @@ func listSessions() {
 func completion(shell string) {
 	switch shell {
 	case "zsh":
-		fmt.Println(embed.MuxZsh)
+		fmt.Print(embed.MuxZsh)
 	default:
-		fmt.Println("# noop")
+		fmt.Print("# noop")
 	}
 }
