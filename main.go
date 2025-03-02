@@ -36,7 +36,7 @@ func main() {
 	}
 
 	if len(args) == 0 {
-		log.Fatal("Invalid command")
+		log.Fatal("Invalid command (no args)")
 	}
 
 	switch args[0] {
@@ -51,7 +51,7 @@ func main() {
 	case Completion:
 		completion(args[1])
 	default:
-		log.Fatal("Invalid command")
+		log.Fatal(fmt.Sprintf("Invalid command (cant find %s)", args[0]))
 	}
 
 	os.Exit(0)
