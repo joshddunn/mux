@@ -1,2 +1,4 @@
-go build -o mux --ldflags="-X 'main.version=$1'"
-shasum --algorithm 256 ./mux | cut -d " " -f 1
+go build -o mux/mux --ldflags="-X 'main.version=$1'"
+cp -r completion mux
+tar -zcvf mux.tar.gz mux/*
+shasum --algorithm 256 mux.tar.gz | cut -d " " -f 1
