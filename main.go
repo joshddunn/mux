@@ -31,7 +31,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		log.Print(version)
+		fmt.Println(version)
 		os.Exit(0)
 	}
 
@@ -84,7 +84,7 @@ func listSessions() {
 func completion(shell string) {
 	switch shell {
 	case "zsh":
-		fmt.Print(embed.MuxZsh)
+		fmt.Println(embed.MuxZsh)
 	default:
 		log.Fatal(fmt.Sprintf("Completion is not available for `%s`", shell))
 	}
