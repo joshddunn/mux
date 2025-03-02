@@ -1,5 +1,5 @@
 #compdef mux
-#autoload
+#definition manage tmux sessions
 
 local -a subcmds
 
@@ -14,7 +14,7 @@ _arguments '--version[Current version]' \
   '*:: :->subcmds' && return 0
 
 if (( CURRENT == 1 )); then
-  _describe "mux" subcmds
+  _describe -t subcmds "mux subcommands" subcmds
   return
 fi
 

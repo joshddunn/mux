@@ -85,7 +85,5 @@ func completion(shell string) {
 	switch shell {
 	case "zsh":
 		fmt.Print(embed.MuxZsh)
-	default:
-		fmt.Print("# noop")
 	}
 }
