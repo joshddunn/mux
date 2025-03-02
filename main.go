@@ -4,16 +4,18 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"mux/embed"
 	"mux/lib/builder"
 	"mux/lib/config"
 	"os"
 )
 
 const (
-	Config = "config"
-	List   = "list"
-	Start  = "start"
-	Stop   = "stop"
+	Config     = "config"
+	List       = "list"
+	Start      = "start"
+	Stop       = "stop"
+	Completion = "completion"
 )
 
 var (
@@ -46,6 +48,8 @@ func main() {
 		stopSession(args[1:])
 	case List:
 		listSessions()
+	case Completion:
+		completion(args[1])
 	default:
 		log.Fatal("Invalid command")
 	}
@@ -72,5 +76,12 @@ func listSessions() {
 
 	for _, s := range sessions {
 		fmt.Println(s.Name)
+	}
+}
+
+func completion(shell string) {
+	switch shell {
+	case "zsh":
+		fmt.Print(embed.MuxZsh)
 	}
 }
