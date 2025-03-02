@@ -58,10 +58,19 @@ func (config *Config) Validate() error {
 		}
 	}
 
+	sessionNames := map[string]bool{}
+
 	for sessionIndex := range config.Sessions {
 		session := &config.Sessions[sessionIndex]
 		e := session.validate()
 		err = errors.Join(err, e)
+
+		if sessionNames[session.Name] {
+			message := fmt.Sprintf("Session name must be unique. `%s` is repeated.", session.Name)
+			err = errors.Join(err, errors.New(message))
+		} else {
+			sessionNames[session.Name] = true
+		}
 
 		for windowIndex := range session.Windows {
 			window := &session.Windows[windowIndex]

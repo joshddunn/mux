@@ -36,7 +36,7 @@ func main() {
 	}
 
 	if len(args) == 0 {
-		log.Fatal("Invalid command (no args)")
+		log.Fatal("Please enter a command")
 	}
 
 	switch args[0] {
@@ -51,7 +51,7 @@ func main() {
 	case Completion:
 		completion(args[1])
 	default:
-		log.Fatal(fmt.Sprintf("Invalid command (cant find %s)", args[0]))
+		log.Fatal("Invalid command")
 	}
 
 	os.Exit(0)
@@ -85,5 +85,7 @@ func completion(shell string) {
 	switch shell {
 	case "zsh":
 		fmt.Print(embed.MuxZsh)
+	default:
+		log.Fatal(fmt.Sprintf("Completion is not available for `%s`", shell))
 	}
 }

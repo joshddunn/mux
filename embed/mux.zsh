@@ -1,6 +1,9 @@
 #compdef mux
 #definition manage tmux sessions
 
+# zsh completion system docs
+# https://zsh.sourceforge.io/Doc/Release/Completion-System.html
+
 local -a subcmds
 
 subcmds=(
