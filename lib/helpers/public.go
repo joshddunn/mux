@@ -9,8 +9,12 @@ func Pointer[T any](d T) *T {
 	return &d
 }
 
+func DirectoryFullpath(dir string) string {
+	return strings.Replace(dir, "~", HomeDir(), 1)
+}
+
 func DirectoryExists(dir string) bool {
-	fullpath := strings.Replace(dir, "~", HomeDir(), 1)
+	fullpath := DirectoryFullpath(dir)
 	stat, err := os.Stat(fullpath)
 
 	if err == nil {

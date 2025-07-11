@@ -2,6 +2,7 @@ package tmux
 
 import (
 	"fmt"
+	"mux/lib/helpers"
 	"os"
 	"os/exec"
 	"strconv"
@@ -79,7 +80,8 @@ func (t *Tmux) SelectWindow(target int) {
 }
 
 func (t *Tmux) SplitWindow(dir string, split Split, percent int) {
-	cmd := []string{"split-window", "-c", dir}
+	fullpath := helpers.DirectoryFullpath(dir)
+	cmd := []string{"split-window", "-c", fullpath}
 
 	switch split {
 	case Horizontal:
