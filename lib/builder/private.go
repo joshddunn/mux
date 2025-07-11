@@ -30,9 +30,9 @@ func buildSession(session config.Session) {
 			switch *window.Layout {
 			case config.Default:
 				buildDefaultLayout(t, window, i)
-			case config.Rows:
-				buildBarsLayout(t, window, i, tmux.Horizontal)
 			case config.Columns:
+				buildBarsLayout(t, window, i, tmux.Horizontal)
+			case config.Rows:
 				buildBarsLayout(t, window, i, tmux.Vertical)
 			}
 
