@@ -37,7 +37,7 @@ func buildSession(session config.Session) {
 			}
 
 			if i == 0 {
-				t.KillPane(1)
+				t.KillLastPane()
 			}
 
 			t.SendKeys("clear", true)
@@ -47,19 +47,18 @@ func buildSession(session config.Session) {
 			}
 		}
 
-		t.SelectPane(1)
+		t.SelectTopLeftPane()
 	}
 
-	t.KillWindow(1)
+	t.KillFirstWindow()
 
 	baseIndex := 1
 	if *session.ZeroIndex {
 		baseIndex = 0
 	}
 
-	for i := range session.Windows {
-		t.MoveWindow(i+2, i+baseIndex)
-	}
+	t.SetBaseIndex(baseIndex)
+	t.RenumberWindows()
 
 	t.SelectWindow(*session.SelectWindow)
 	t.Exec()

@@ -21,9 +21,9 @@ func StartSession(name string) {
 		if session == nil {
 			message := fmt.Sprintf("Session `%s` not defined in ~/%s", name, config.File)
 			log.Fatal(message)
+		} else {
+			buildSession(*session)
 		}
-
-		buildSession(*session)
 	}
 }
 

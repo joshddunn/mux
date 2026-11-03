@@ -63,12 +63,16 @@ func (t *Tmux) NewSession() {
 	t.append("new-session", "-s", t.SessionName)
 }
 
-func (t *Tmux) KillWindow(target int) {
-	t.append("kill-window", "-t", strconv.Itoa(target))
+func (t *Tmux) KillFirstWindow() {
+	t.append("kill-window", "-t", "{start}")
 }
 
-func (t *Tmux) MoveWindow(target int, destination int) {
-	t.append("move-window", "-s", strconv.Itoa(target), "-t", strconv.Itoa(destination))
+func (t *Tmux) RenumberWindows() {
+	t.append("move-window", "-r")
+}
+
+func (t *Tmux) SetBaseIndex(index int) {
+	t.append("set-option", "base-index", strconv.Itoa(index))
 }
 
 func (t *Tmux) NewWindow(name string) {
@@ -97,12 +101,12 @@ func (t *Tmux) SplitWindow(dir string, split Split, percent int) {
 	t.append(cmd...)
 }
 
-func (t *Tmux) KillPane(target int) {
-	t.append("kill-pane", "-t", strconv.Itoa(target))
+func (t *Tmux) KillLastPane() {
+	t.append("kill-pane", "-t", "{last}")
 }
 
-func (t *Tmux) SelectPane(target int) {
-	t.append("select-pane", "-t", strconv.Itoa(target))
+func (t *Tmux) SelectTopLeftPane() {
+	t.append("select-pane", "-t", "{top-left}")
 }
 
 func (t *Tmux) SendKeys(keys string, enter bool) {
