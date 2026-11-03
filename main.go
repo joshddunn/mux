@@ -8,6 +8,7 @@ import (
 	"mux/lib/builder"
 	"mux/lib/config"
 	"os"
+	"os/exec"
 )
 
 const (
@@ -16,6 +17,7 @@ const (
 	List       = "list"
 	Start      = "start"
 	Stop       = "stop"
+	Upgrade    = "upgrade"
 )
 
 var (
@@ -50,6 +52,8 @@ func main() {
 		startSession(args[1:])
 	case Stop:
 		stopSession(args[1:])
+	case Upgrade:
+		upgrade()
 	default:
 		log.Fatal("Invalid command.")
 	}
@@ -88,5 +92,22 @@ func completion(shell string) {
 	default:
 		message := fmt.Sprintf("Completion is not available for `%s` shell.", shell)
 		log.Fatal(message)
+	}
+}
+
+func upgrade() {
+	brew, err := exec.LookPath("brew")
+	if err != nil {
+		log.Fatal("`mux upgrade` requires Homebrew.")
+	}
+
+	for _, args := range [][]string{{"update"}, {"upgrade", "joshddunn/tap/mux"}} {
+		cmd := exec.Command(brew, args...)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		if cmd.Run() != nil {
+			os.Exit(1)
+		}
 	}
 }

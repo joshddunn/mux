@@ -7,9 +7,10 @@
 local -a subcmds
 
 subcmds=(
-  "config:Open config file (~/.mux.json) with $(echo $EDITOR)",
-  'start:Start session in config file',
+  "config:Open config file (~/.mux.json) with $(echo $EDITOR)"
+  'start:Start session in config file'
   'stop:Stop session in config file'
+  'upgrade:Upgrade mux with Homebrew'
 )
 
 _arguments '--version[Current version]' \
